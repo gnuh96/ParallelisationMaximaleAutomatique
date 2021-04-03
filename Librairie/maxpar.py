@@ -125,7 +125,7 @@ class TaskSystem:
             if set(task1.reads) & set(task2.writes) is None and set(task1.writes) & set(task2.reads) is None and set(
                     task1.writes) & set(task2.writes) is None:
                 rs.append([task1, task2])
-            self.bernstein(ls)
+            rs = rs + self.bernstein(ls)
         return rs
 
     def run(self):
@@ -151,14 +151,15 @@ class TaskSystem:
                     break
             if ajout:
                 list2.append(task)
-        """self.bernstein(list2)
-        for v in list2.pop(0):
-            print(v.name)"""
+        inter = self.bernstein(list2)
+        v = inter.pop(0)
+        for a in v:
+            print(a.name)
         """for v in list2:
             print(v.name)"""
-        while list2:
+        """while list2:
             t = list2.pop(0)
-            t.run()
+            t.run()"""
 
 
 if __name__ == '__main__':

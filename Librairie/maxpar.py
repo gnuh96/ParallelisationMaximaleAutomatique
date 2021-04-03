@@ -36,25 +36,25 @@ def runTmultiplication():
     M = X * Y
 
 
-def getDictPrecedence(listTask, d):  # Recuperer key
+def getDictPrecedence(listTask, dictPre):  # Recuperer key
     if str(input('Entrez une nouvelle tache ? ((o pour valider) : ')) == 'o':
         key = str(input('Entrez tache: '))
-        if verifTask(listTask, key, d):  # verifier entree
+        if verifTask(listTask, key, dictPre):  # verifier entree
             val = entreeVal(listTask, [])  # recuperer sous tache
             # print(val)
-            d.setdefault(key, val)  # ajouter key+sous tache
-            print(d)
-            getDictPrecedence(listTask, d)  # recommencer
+            dictPre.setdefault(key, val)  # ajouter key+sous tache
+            print(dictPre)
+            getDictPrecedence(listTask, dictPre)  # recommencer
         else:
-            getDictPrecedence(listTask, d)  # recommencer
+            getDictPrecedence(listTask, dictPre)  # recommencer
     # print(d)
-    return d  # retourner le dictionnaire
+    return dictPre  # retourner le dictionnaire
 
 
-def verifTask(listTask, key, d):  # verifier les conditions
+def verifTask(listTask, key, dictPre):  # verifier les conditions
     if recherche(listTask, key) is None:
         print("Tache inconnue")
-    elif key in d:
+    elif key in dictPre:
         print("Tache deja existante")
     else:
         print('bon')
@@ -82,6 +82,12 @@ def recherche(liste, nomTache):
     return None
 
 
+def affiche():
+    print(A)
+    print(S)
+    print(M)
+
+
 class TaskSystem:
     """
     Une classe representant un système de tâches
@@ -89,9 +95,9 @@ class TaskSystem:
     - 'dict' : un dictionaire de (nom de tâche, noms des tâches précédences)
     """
 
-    def __init__(self, liste, dict):
+    def __init__(self, liste, dictionaire):
         self.liste = liste.copy()
-        self.dict = dict
+        self.dict = dictionaire
 
     """
     Retourner la liste de noms des tâches qui doivent s'exécuter avant la tâche 'nomTache'
@@ -103,7 +109,7 @@ class TaskSystem:
         tab = self.dict.get(nomTache)
         for e in tab:
             rs.add(e)
-            rs = rs | self.getDependancies(e)
+            rs = rs | self.getDependancies(e)  # union 2 liste "set"
         return rs
 
     """
@@ -114,12 +120,11 @@ class TaskSystem:
     def bernstein(self, liste):
         rs = list()
         ls = liste.copy()
-        t1 = ls.pop()
-        for t2 in ls:
-            if set(t1.reads) & set(t2.writes) is None and set(t1.writes) & set(t2.reads) is None and set(
-                    t1.writes) & set(t2.writes) is None:
-                a = [t1, t2]
-                rs.append(a)
+        task1 = ls.pop()
+        for task2 in ls:
+            if set(task1.reads) & set(task2.writes) is None and set(task1.writes) & set(task2.reads) is None and set(
+                    task1.writes) & set(task2.writes) is None:
+                rs.append([task1, task2])
             self.bernstein(ls)
         return rs
 
@@ -131,23 +136,26 @@ class TaskSystem:
             Ajout les elements dans la list1 à list2 s'il n'existe pas dans la list2
             """
             for nom in list1:
-                b = True
-                for a in list2:
-                    if nom == a.name:
-                        b = False
+                ajout = True
+                for task in list2:
+                    if nom == task.name:
+                        ajout = False
                         break
-                if b:
+                if ajout:
                     list2.append(recherche(self.liste, nom))
-        for a in self.liste:
-            b = True
-            for Z in list2:
-                if a.name == Z.name:
-                    b = False
+        for task in self.liste:
+            ajout = True
+            for ele in list2:
+                if task.name == ele.name:
+                    ajout = False
                     break
-            if b:
-                list2.append(a)
-        for v in list2:
-            print(v.name)
+            if ajout:
+                list2.append(task)
+        """self.bernstein(list2)
+        for v in list2.pop(0):
+            print(v.name)"""
+        """for v in list2:
+            print(v.name)"""
         while list2:
             t = list2.pop(0)
             t.run()
@@ -157,7 +165,7 @@ if __name__ == '__main__':
     X = None
     Y = None
     Z = None
-    """somme (addition ?)"""
+    """addition"""
     A = None
     """soustraction"""
     S = None

@@ -37,10 +37,11 @@ def bernstein(liste):
     for task2 in ls:
         if set(task1.reads) & set(task2.writes) == set() and set(task1.writes) & set(task2.reads) == set() and set(
                 task1.writes) & set(task2.writes) == set():
-            x = [task1.name, task2.name] in rs
-            if not x:
-                rs.append([task1.name, task2.name])
-        rs = rs + bernstein(ls)
+            rs.append([task1.name, task2.name])
+        for a in bernstein(ls):
+            y = a in rs
+            if not y:
+                rs.append(a)
     return rs
 
 
@@ -66,20 +67,27 @@ tSoustraction.reads = ["X", "Y"]
 tSoustraction.writes = ["S"]
 tSoustraction.run = runTsoustraction
 
+print("test 1")
 l = list([t1, t2, tSomme, tSoustraction])
 v = bernstein(l)
 print(v)
 
 print(set(t1.reads) & set(t2.writes) == set())
 
+print("test 2")
 rs = list()
 l = list([t1, t2, tSomme, tSoustraction])
 task1 = l.pop(0)
 for v in l:
     print(v.name)
-if set(t1.reads) & set(t2.writes) == set() and set(t1.writes) & set(t2.reads) == set() and set(
-        t1.writes) & set(t2.writes) == set():
-    rs.append([t1.name, t2.name])
+    if set(task1.reads) & set(v.writes) == set() and set(task1.writes) & set(v.reads) == set() and set(
+            task1.writes) & set(v.writes) == set():
+        rs.append([task1.name, v.name])
+    task2 = l.pop(0)
+    print(task2.name)
+
 print(rs)
-a = ["T1", "T2"] in rs
-print(a)
+
+print("test 3")
+a = [[1, 2], [3], [1, 2], [4], [1, 2], [3, 5]]
+

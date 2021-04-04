@@ -102,7 +102,10 @@ def bernstein(liste):
         if set(task1.reads) & set(task2.writes) == set() and set(task1.writes) & set(task2.reads) == set() and \
                 set(task1.writes) & set(task2.writes) == set():
             rs.append([task1, task2])
-        rs = rs + bernstein(ls)
+        for a in bernstein(ls):
+            y = a in rs
+            if not y:
+                rs.append(a)
     return rs
 
 

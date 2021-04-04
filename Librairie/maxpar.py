@@ -88,6 +88,24 @@ def affiche():
     print(M)
 
 
+"""
+    Retourne la liste des paires de taches non interferentes
+    en fonction recursive
+"""
+
+
+def bernstein(liste):
+    rs = list()
+    ls = liste.copy()
+    task1 = ls.pop(0)
+    for task2 in ls:
+        if set(task1.reads) & set(task2.writes) == set() and set(task1.writes) & set(task2.reads) == set() and \
+                set(task1.writes) & set(task2.writes) == set():
+            rs.append([task1, task2])
+        rs = rs + bernstein(ls)
+    return rs
+
+
 class TaskSystem:
     """
     Une classe representant un système de tâches
@@ -110,22 +128,6 @@ class TaskSystem:
         for e in tab:
             rs.add(e)
             rs = rs | self.getDependancies(e)  # union 2 liste "set"
-        return rs
-
-    """
-    Retourne la liste des paires de taches non interferentes
-    en fonction recursive
-    """
-
-    def bernstein(self, liste):
-        rs = list()
-        ls = liste.copy()
-        task1 = ls.pop()
-        for task2 in ls:
-            if set(task1.reads) & set(task2.writes) is None and set(task1.writes) & set(task2.reads) is None and set(
-                    task1.writes) & set(task2.writes) is None:
-                rs.append([task1, task2])
-            rs = rs + self.bernstein(ls)
         return rs
 
     def run(self):
@@ -151,7 +153,7 @@ class TaskSystem:
                     break
             if ajout:
                 list2.append(task)
-        inter = self.bernstein(list2)
+        inter = bernstein(list2)
         v = inter.pop(0)
         for a in v:
             print(a.name)

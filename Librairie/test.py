@@ -44,7 +44,10 @@ def bernstein(liste):
                 rs.append(a)
     return rs
 
+
 """Verifier que si 2 listes sont pas interprentes"""
+
+
 def memeNiveau(ls1, ls2):
     for el1 in ls1:
         for el2 in ls2:
@@ -52,7 +55,10 @@ def memeNiveau(ls1, ls2):
                 return True
     return False
 
+
 """concatener 2 listes"""
+
+
 def concatlist(ls1, ls2):
     for el2 in ls2:
         for el1 in ls1:
@@ -60,9 +66,13 @@ def concatlist(ls1, ls2):
                 ls1.append(el2)
     return ls1
 
+
 """supprimer item dans la liste"""
+
+
 def removeItem(liste, item):
     None
+
 
 t1 = Task()
 t1.name = "T1"
@@ -93,26 +103,25 @@ tMultiplication.writes = ["M"]
 tMultiplication.run = runTmultiplication
 
 print("test 1")
-l = list([t1, t2, tSomme, tSoustraction, tMultiplication])
-v = bernstein(l)
+l1 = list([t1, t2, tSomme, tSoustraction, tMultiplication])
+v = bernstein(l1)
 print(v)
 
 print(set(t1.reads) & set(t2.writes) == set())
 
 print("test 2")
 rs = list()
-l = list([t1, t2, tSomme, tSoustraction])
-task1 = l.pop(0)
-for v in l:
+l2 = list([t1, t2, tSomme, tSoustraction])
+task1 = l2.pop(0)
+for v in l2:
     print(v.name)
     if set(task1.reads) & set(v.writes) == set() and set(task1.writes) & set(v.reads) == set() and set(
             task1.writes) & set(v.writes) == set():
         rs.append([task1.name, v.name])
-    task2 = l.pop(0)
+    task2 = l2.pop(0)
     print(task2.name)
 
 print(rs)
 
 print("test 3")
 a = [[1, 2], [3], [1, 2], [4], [1, 2], [3, 5]]
-

@@ -45,6 +45,23 @@ def bernstein(liste):
     return rs
 
 
+def memeNiveau(ls1, ls2):
+    for el1 in ls1:
+        for el2 in ls2:
+            if el1 == el2:
+                return True
+    return False
+
+
+def concatlist(ls1, ls2):
+    for el2 in ls2:
+        for el1 in ls1:
+            if el2 != el1:
+                ls1.append(el2)
+    return ls1
+
+
+
 t1 = Task()
 t1.name = "T1"
 t1.writes = ["X"]
@@ -67,8 +84,14 @@ tSoustraction.reads = ["X", "Y"]
 tSoustraction.writes = ["S"]
 tSoustraction.run = runTsoustraction
 
+tMultiplication = Task()
+tMultiplication.name = "multiplication"
+tMultiplication.reads = ["X", "Y"]
+tMultiplication.writes = ["M"]
+tMultiplication.run = runTmultiplication
+
 print("test 1")
-l = list([t1, t2, tSomme, tSoustraction])
+l = list([t1, t2, tSomme, tSoustraction, tMultiplication])
 v = bernstein(l)
 print(v)
 

@@ -44,7 +44,7 @@ def bernstein(liste):
                 rs.append(a)
     return rs
 
-
+"""Verifier que si 2 listes sont pas interprentes"""
 def memeNiveau(ls1, ls2):
     for el1 in ls1:
         for el2 in ls2:
@@ -52,7 +52,7 @@ def memeNiveau(ls1, ls2):
                 return True
     return False
 
-
+"""concatener 2 listes"""
 def concatlist(ls1, ls2):
     for el2 in ls2:
         for el1 in ls1:
@@ -60,7 +60,9 @@ def concatlist(ls1, ls2):
                 ls1.append(el2)
     return ls1
 
-
+"""supprimer item dans la liste"""
+def removeItem(liste, item):
+    None
 
 t1 = Task()
 t1.name = "T1"

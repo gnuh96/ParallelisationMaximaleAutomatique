@@ -37,23 +37,19 @@ def runTmultiplication():
 
 
 def getDictPrecedence(listTask, dictPre):  # Recuperer key
-    end = False
-    while not end:
-        if str(input('Entrez une nouvelle tache ? ((o pour valider) : ')).upper() == 'O':
-            key = str(input('Entrez tache: '))
-            if verifTask(listTask, key, dictPre):  # verifier entree
-                val = entreeVal(listTask, [])  # recuperer sous tache
-                # print(val)
-                dictPre.setdefault(key, val)  # ajouter key+sous tache
-        # print(d)
+    if str(input('Entrez une nouvelle tache ? ((o pour valider) : ')) == 'o':
+        key = str(input('Entrez tache: '))
+        if verifTask(listTask, key, dictPre):  # verifier entree
+            val = entreeVal(listTask, [])  # recuperer sous tache
+            # print(val)
+            dictPre.setdefault(key, val)  # ajouter key+sous tache
+            print(dictPre)
+            getDictPrecedence(listTask, dictPre)  # recommencer
         else:
-            end = True
-    if not dictPre :#si aucune entree
-        print("Erreur ! Aucune tache entrée !")
-        exit()#stop
-    else:#sinon
-        print(dictPre)
-        return dictPre  # retourner le dictionnaire
+            getDictPrecedence(listTask, dictPre)  # recommencer
+    # print(d)
+    return dictPre  # retourner le dictionnaire
+
 
 def verifTask(listTask, key, dictPre):  # verifier les conditions
     if recherche(listTask, key) is None:
@@ -67,15 +63,15 @@ def verifTask(listTask, key, dictPre):  # verifier les conditions
 
 
 def entreeVal(listTask, liste):  # entree les sous taches
-    end = False
-    while not end:
-        if str(input('Entrez tache precedente ? (o pour valider) : ')).upper() == 'O':
-            entree = str(input('Entrez tache: '))
-            if verifTask(listTask, entree, liste):  # verifier
-                liste.append(entree)
-                # print(liste)
+    if str(input('Entrez tache precedente ? (o pour valider) : ')) == 'o':
+        entree = str(input('Entrez tache: '))
+        if verifTask(listTask, entree, liste):  # verifier
+            liste.append(entree)
+            # print(liste)
+            entreeVal(listTask, liste)  # recommencer
         else:
-            end = True
+            entreeVal(listTask, liste)
+    print('fin')
     return liste
 
 
@@ -160,15 +156,13 @@ class TaskSystem:
                     break
             if ajout:
                 list2.append(task)
-        inter = bernstein(list2)
+        """inter = bernstein(list2)
         v = inter.pop(0)
         for a in v:
-            print(a.name)
-        """for v in list2:
-            print(v.name)"""
-        """while list2:
+            print(a.name)"""
+        while list2:
             t = list2.pop(0)
-            t.run()"""
+            t.run()
 
 
 if __name__ == '__main__':
@@ -223,10 +217,9 @@ if __name__ == '__main__':
     print(S)
     print(M)
     """
-    listT = [t1, t2, tSomme, tSoustraction, tMultiplication]
     d = dict()
-    dictionnaire = getDictPrecedence(listT, d)
+    dictionnaire = getDictPrecedence([t1, t2, tSomme, tSoustraction, tMultiplication], d)
     # print(dictionnaire)
-    s1 = TaskSystem(listT, dictionnaire)
+    s1 = TaskSystem([t1, t2, tSomme], dictionnaire)
     s1.run()
     print(A)

@@ -31,18 +31,26 @@ def runTmultiplication():
 
 
 def bernstein(liste):
-    rs = list()
-    ls = liste.copy()
-    task1 = ls.pop(0)
-    for task2 in ls:
+    rs1 = list()
+    ls1 = liste.copy()
+    task1 = ls1.pop(0)
+    for task2 in ls1:
         if set(task1.reads) & set(task2.writes) == set() and set(task1.writes) & set(task2.reads) == set() and set(
                 task1.writes) & set(task2.writes) == set():
-            rs.append([task1.name, task2.name])
-        for a in bernstein(ls):
-            y = a in rs
+            rs1.append([task1, task2])
+        for a in bernstein(ls1):
+            y = a in rs1
             if not y:
-                rs.append(a)
-    return rs
+                rs1.append(a)
+    """rs2 = rs1.copy()
+    for i1 in range(len(rs1)-1):
+        for i2 in range(1, len(rs1)):
+            if memeNiveau(rs1[i1], rs1[i2]):
+                new = concatlist(rs1[i1], rs1[i2])
+                rs2.remove(rs1[i1])
+                rs2.remove(rs1[i2])
+                rs2.insert(i1, new)"""
+    return rs1
 
 
 """Verifier que si 2 listes sont pas interprentes"""
@@ -60,18 +68,12 @@ def memeNiveau(ls1, ls2):
 
 
 def concatlist(ls1, ls2):
-    for el2 in ls2:
-        for el1 in ls1:
-            if el2 != el1:
-                ls1.append(el2)
-    return ls1
-
-
-"""supprimer item dans la liste"""
-
-
-def removeItem(liste, item):
-    None
+    rs = ls1.copy()
+    for i1 in range(len(ls1) - 1):
+        for i2 in range(1, len(ls2)):
+            if ls1[i1] != ls2[i2]:
+                rs.append(ls2[i2])
+    return rs
 
 
 t1 = Task()
@@ -105,7 +107,9 @@ tMultiplication.run = runTmultiplication
 print("test 1")
 l1 = list([t1, t2, tSomme, tSoustraction, tMultiplication])
 v = bernstein(l1)
-print(v)
+a = v.pop()
+print(a)
+print(a.pop().name)
 
 print(set(t1.reads) & set(t2.writes) == set())
 
@@ -124,4 +128,23 @@ for v in l2:
 print(rs)
 
 print("test 3")
-a = [[1, 2], [3], [1, 2], [4], [1, 2], [3, 5]]
+b = [t1.name, t2.name]
+c = [t2.name, tSomme.name]
+print(memeNiveau(b,c))
+e = concatlist(b,c)
+print(e)
+
+print("test 4")
+g = [tSomme.name, t1.name]
+d = [b, c, g]
+f = d.copy()
+for i1 in range(len(d) - 1):
+    for i2 in range(i1+1, len(d)-1):
+        if memeNiveau(d[i1], d[i2]):
+            new = concatlist(d[i1], d[i2])
+            f.remove(d[i1])
+            f.remove(d[i2])
+            f.insert(i1, new)
+print(range(len(d) - 1))
+print(range(1, len(d)-1))
+print(f)

@@ -39,7 +39,7 @@ def runTmultiplication():
 def getDictPrecedence(listTask, dictPre):  # Recuperer key
     end = False
     while not end:
-        if str(input('Entrez une nouvelle tache ? ((o pour valider) : ')) == ('o' or 'O'):
+        if str(input('Entrez une nouvelle tache ? ((o pour valider) : ')).upper() == 'O':
             key = str(input('Entrez tache: '))
             if verifTask(listTask, key, dictPre):  # verifier entree
                 val = entreeVal(listTask, [])  # recuperer sous tache
@@ -69,7 +69,7 @@ def verifTask(listTask, key, dictPre):  # verifier les conditions
 def entreeVal(listTask, liste):  # entree les sous taches
     end = False
     while not end:
-        if str(input('Entrez tache precedente ? (o pour valider) : ')) == 'o':
+        if str(input('Entrez tache precedente ? (o pour valider) : ')).upper() == 'O':
             entree = str(input('Entrez tache: '))
             if verifTask(listTask, entree, liste):  # verifier
                 liste.append(entree)
@@ -224,8 +224,8 @@ if __name__ == '__main__':
     print(M)
     """
     listT = [t1, t2, tSomme, tSoustraction, tMultiplication]
-    dictionnaire = getDictPrecedence(listeT, d)
     d = dict()
+    dictionnaire = getDictPrecedence(listT, d)
     # print(dictionnaire)
     s1 = TaskSystem(listT, dictionnaire)
     s1.run()
